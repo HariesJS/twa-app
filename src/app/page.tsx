@@ -16,9 +16,23 @@ interface UserData {
 export default function Home() {
     const [userData, setuserData] = useState<UserData | null>(null)
 
+    // useEffect(() => {
+    // if (WebApp.initDataUnsafe.user) {
+    //     setuserData(WebApp.initDataUnsafe.user as UserData)
+    // }
+    // }, [])
+
     useEffect(() => {
-        if (WebApp.initDataUnsafe.user) {
-            setuserData(WebApp.initDataUnsafe.user as UserData)
+        const init = async () => {
+            const {default: WebApp} = await import("@twa-dev/sdk")
+            WebApp.ready()
+            if (WebApp.initDataUnsafe.user) {
+                setuserData(WebApp.initDataUnsafe.user as UserData)
+            }
+        }
+
+        if (typeof window !== "undefined") {
+            init()
         }
     }, [])
 
