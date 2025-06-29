@@ -2,7 +2,6 @@
 
 import {useEffect, useState} from "react"
 import styles from "./page.module.css"
-import WebApp from "@twa-dev/sdk"
 
 interface UserData {
     id: number
@@ -11,16 +10,11 @@ interface UserData {
     username?: string
     language_code: string
     is_premiuim?: boolean
+    photo_url?: string
 }
 
 export default function Home() {
     const [userData, setuserData] = useState<UserData | null>(null)
-
-    // useEffect(() => {
-    // if (WebApp.initDataUnsafe.user) {
-    //     setuserData(WebApp.initDataUnsafe.user as UserData)
-    // }
-    // }, [])
 
     useEffect(() => {
         const init = async () => {
@@ -41,12 +35,21 @@ export default function Home() {
             <h1>TON-TRON</h1>
             {userData ? (
                 <div>
+                    {userData.photo_url ? (
+                        <img
+                            src={userData.photo_url}
+                            alt=""
+                            width={100}
+                            height={100}
+                            style={{borderRadius: 20}}
+                        />
+                    ) : null}
                     <p>ID: {userData.id}</p>
-                    <p>First Name: {userData.first_name}</p>
-                    <p>Last Name: {userData.last_name}</p>
-                    <p>Premium: {userData.is_premiuim}</p>
+                    <p>First Name: {userData.first_name || "-"}</p>
+                    <p>Last Name: {userData.last_name || "-"}</p>
+                    <p>Premium: {userData.is_premiuim ? "Yes" : "No"}</p>
                     <p>Language: {userData.language_code}</p>
-                    <p>Username: {userData.username}</p>
+                    <p>Username: {userData.username || "-"}</p>
                 </div>
             ) : (
                 <div>
